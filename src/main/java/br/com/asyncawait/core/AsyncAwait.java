@@ -3,9 +3,10 @@ package br.com.asyncawait.core;
 import br.com.asyncawait.core.models.Pid;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class AsyncAwait {
+public final class AsyncAwait {
 
     private static boolean inicializado = false;
 
@@ -29,5 +30,20 @@ public class AsyncAwait {
 
     public static <T> T await(Pid pid) {
         return null; // TODO impl
+    }
+
+    // class methods
+
+    void addProcess(Process process) {
+        var betterScheduler = getBetterScheduler();
+
+        betterScheduler.add(process);
+    }
+
+    private Scheduler getBetterScheduler() {
+        return this.schedulers.stream()
+                .sorted(Comparator.comparing(Scheduler::sizeQueue))
+                .findFirst()
+                .orElseThrow();
     }
 }

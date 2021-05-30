@@ -1,7 +1,6 @@
 package br.com.asyncawait.core;
 
 import br.com.asyncawait.core.models.Message;
-import br.com.asyncawait.core.models.Process;
 import br.com.asyncawait.core.models.Pid;
 import br.com.asyncawait.core.utils.ProcessUtils;
 
