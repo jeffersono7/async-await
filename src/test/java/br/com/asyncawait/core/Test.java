@@ -20,7 +20,7 @@ public class Test {
         });
 
         Pid pidProcessaString = processBuilder.createProcess((self, receiver, utils) -> {
-            receiver.receive(String.class, message -> {
+            receiver.receive(String.class, message -> { // TODO ver para message ser um deep copy
                 var nome = message.getContent();
 
                 utils.despatcher.accept(pidGetSizeString, new Message<>(message.getSender(), "My name is " + nome + "!"));
