@@ -27,7 +27,9 @@ public class Test {
             });
         });
 
-        asyncAwait.sendMessage(pidProcessaString, new Message<>(Pid.newInstance(), "Jefferson"));
+        for (int i = 0; i < 10_000_000; i++) {
+            asyncAwait.sendMessage(pidProcessaString, new Message<>(Pid.newInstance(), "Jefferson"));
+        }
 //        Pid meuPid = algumaCoisa.async(pidProcessaString, "Jefferson");
 //        var result = algumaCoisa.await(meuPid);
 //        System.out.println("Comprimento da string: " + result);
