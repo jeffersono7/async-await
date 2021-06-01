@@ -1,9 +1,9 @@
 package br.com.asyncawait.core;
 
-import br.com.asyncawait.core.models.Despatcher;
 import br.com.asyncawait.core.models.Message;
 import br.com.asyncawait.core.models.Pid;
 import br.com.asyncawait.core.models.Self;
+import br.com.asyncawait.core.models.ThreeConsumer;
 import br.com.asyncawait.core.utils.ProcessUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -11,20 +11,34 @@ import lombok.RequiredArgsConstructor;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Process implements Self {
 
     private final Queue<Message> mailBox = new ConcurrentLinkedQueue<>();  // fila de mensagens
     private final Pid pid;
-    private final BiConsumer<Receiver, ProcessUtils> run; // funcao deve receber mensagem
+    private final ThreeConsumer<Pid, Receiver, ProcessUtils> run;
+    private final BiConsumer<Pid, Message<?>> despatcher;
 
-    public static Pid newInstance(BiConsumer<Receiver, ProcessUtils> run) {
+    public static Pid newInstance(AsyncAwait asyncAwait, ThreeConsumer<Pid, Receiver, ProcessUtils> run) {
         var pid = Pid.newInstance();
 
-        new Process(pid, run);
+        var process = new Process(pid, run, asyncAwait::sendMessage);
+
+        asyncAwait.start().addProcess(process);
 
         return pid;
+    }
+
+    @Override
+    public Pid self() {
+        return pid;
+    }
+
+    void addMessageInQueue(Message message) {
+        this.mailBox.add(message);
     }
 
     void processMessage() {
@@ -35,11 +49,17 @@ public class Process implements Self {
         }
 
         var receiver = new Receiver();
+        var processUtils = new ProcessUtils(despatcher);
 
-        run.accept(receiver, new ProcessUtils(new Despatcher()));
+        // somente para registrar os matchers no receiver
+        run.accept(pid, receiver, processUtils);
 
         var contentClass = message.getContent().getClass();
 
-        receiver.receivers().getOrDefault(contentClass, m -> {}).accept(message);
+        receiver.receivers().getOrDefault(contentClass, consumerImpl()).accept(message);
+    }
+
+    private Consumer<Message> consumerImpl() {
+        return m -> {};
     }
 }

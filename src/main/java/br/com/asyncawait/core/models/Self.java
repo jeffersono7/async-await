@@ -1,8 +1,6 @@
 package br.com.asyncawait.core.models;
 
+@FunctionalInterface
 public interface Self {
-
-    default Pid self() {
-        return null; // TODO impl
-    }
+    Pid self();
 }

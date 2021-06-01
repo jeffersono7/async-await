@@ -1,5 +1,6 @@
 package br.com.asyncawait.core;
 
+import br.com.asyncawait.core.models.Message;
 import br.com.asyncawait.core.models.Pid;
 
 import java.util.ArrayList;
@@ -8,13 +9,11 @@ import java.util.List;
 
 public final class AsyncAwait {
 
-    private static boolean inicializado = false;
+    private static AsyncAwait instance;
 
     private final List<Scheduler> schedulers = new ArrayList<>();
 
     private AsyncAwait() {
-        inicializado = true;
-
         var quantidadeThreadsSistema = 14; // TODO pegar inf do SO
 
         for (int i = 0; i < quantidadeThreadsSistema; i++) {
@@ -22,17 +21,31 @@ public final class AsyncAwait {
         }
     }
 
-    public static synchronized void start() {
-        if (!inicializado) {
-            new AsyncAwait();
+    public static synchronized AsyncAwait start() {
+        if (instance == null) {
+            instance = new AsyncAwait();
         }
-    }
-
-    public static <T> T await(Pid pid) {
-        return null; // TODO impl
+        return instance;
     }
 
     // class methods
+
+//    public <T> Pid async(Pid target, Message<T> message) {
+//        sendMessage(target, message);
+//    }
+
+    public void sendMessage(Pid pid, Message<?> message) {
+        var schedulerIterator = schedulers.iterator();
+
+        while (schedulerIterator.hasNext()) {
+            var scheduler = schedulerIterator.next();
+            var process = scheduler.getProcessByPid(pid);
+
+            if (process != null) {
+                scheduler.addMessageInQueue(pid, message);
+            }
+        }
+    }
 
     void addProcess(Process process) {
         var betterScheduler = getBetterScheduler();
