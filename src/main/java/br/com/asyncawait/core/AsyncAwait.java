@@ -6,6 +6,7 @@ import br.com.asyncawait.core.models.Pid;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Supplier;
 
 public final class AsyncAwait {
 
@@ -29,6 +30,24 @@ public final class AsyncAwait {
     }
 
     // class methods
+
+    public <T> Async<T> async(Supplier<T> supplier) {
+        var processBuilder = ProcessBuilder.getInstance(this);
+
+        var async = Async.<T>getInstance();
+
+        var asyncPid = processBuilder.createProcess(((self, receiver, utils) -> {
+            receiver.receive(Boolean.class, message -> {
+                var content = supplier.get();
+
+                async.accept(content);
+            });
+        }));
+
+        this.sendMessage(asyncPid, new Message<>(Pid.newInstance(), Boolean.TRUE));
+
+        return async;
+    }
 
 //    public <T> Pid async(Pid target, Message<T> message) {
 //        sendMessage(target, message);

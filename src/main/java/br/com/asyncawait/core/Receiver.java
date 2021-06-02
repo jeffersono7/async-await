@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 public class Receiver {
 
-    private Map<Class<?>, Consumer<Message>> receiveMatchers = new HashMap<>();
+    private final Map<Class<?>, Consumer<Message>> receiveMatchers = new HashMap<>();
 
     public <T> Receiver receive(Class<T> tClass, Consumer<Message<T>> run) {
         Consumer<Message> genericRun = message -> {

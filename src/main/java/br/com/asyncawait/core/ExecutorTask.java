@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExecutorTask implements Runnable {
 
-    private Queue<Process> processQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<Process> processQueue = new ConcurrentLinkedQueue<>();
     private Thread threadExecutor;
 
     public static ExecutorTask getInstance() {

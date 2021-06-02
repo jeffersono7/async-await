@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 // TODO ver forma de indexar o pid, necessário para encaminhar uma mensagem
 public final class Scheduler {
 
-    private Map<Pid, Process> processes = new ConcurrentHashMap<>();
+    private final Map<Pid, Process> processes = new ConcurrentHashMap<>();
     private ExecutorTask executorTask;
 
     Scheduler() {

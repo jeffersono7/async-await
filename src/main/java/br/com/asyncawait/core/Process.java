@@ -27,7 +27,7 @@ public class Process implements Self {
 
         var process = new Process(pid, run, asyncAwait::sendMessage);
 
-        asyncAwait.start().addProcess(process);
+        AsyncAwait.start().addProcess(process);
 
         return pid;
     }
@@ -60,6 +60,7 @@ public class Process implements Self {
     }
 
     private Consumer<Message> consumerImpl() {
-        return m -> {};
+        return m -> {
+        };
     }
 }
