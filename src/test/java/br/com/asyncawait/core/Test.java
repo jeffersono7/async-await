@@ -3,6 +3,8 @@ package br.com.asyncawait.core;
 import br.com.asyncawait.core.models.Message;
 import br.com.asyncawait.core.models.Pid;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Predicate;
@@ -48,7 +50,7 @@ public class Test {
     private static void testarComStream(AsyncAwait asyncAwait) {
         var lista = new ArrayList<Integer>();
 
-        for (int i = 2; i < 10_000_000; i++) {
+        for (int i = 2_000_000; i < 10_000_000; i++) {
             lista.add(i);
         }
 
@@ -62,6 +64,8 @@ public class Test {
             }
             return true;
         };
+
+        var inicio = LocalDateTime.now();
 
         var processos = lista.stream()
                 .map(num -> {
@@ -83,5 +87,17 @@ public class Test {
 
                     return integerHashMap.get(key);
                 }).forEach(System.out::println);
+
+        var diff = Duration.between(inicio, LocalDateTime.now()).getSeconds();
+        System.out.println("Durou: " + diff + " segundos!");
+
+//        var inicio2 = LocalDateTime.now();
+//
+//        lista.stream()
+//                .filter(isPrimo)
+//                .forEach(System.out::println);
+//
+//        var diff2 = Duration.between(inicio2, LocalDateTime.now()).getSeconds();
+//        System.out.println("Durou: " + diff2 + " segundos!");
     }
 }
