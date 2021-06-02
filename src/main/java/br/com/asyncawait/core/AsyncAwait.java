@@ -49,10 +49,6 @@ public final class AsyncAwait {
         return async;
     }
 
-//    public <T> Pid async(Pid target, Message<T> message) {
-//        sendMessage(target, message);
-//    }
-
     public void sendMessage(Pid pid, Message<?> message) {
         var schedulerIterator = schedulers.iterator();
 

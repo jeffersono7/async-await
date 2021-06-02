@@ -13,11 +13,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Process implements Self {
 
-    private final Queue<Message> mailBox = new ConcurrentLinkedQueue<>();  // fila de mensagens
+    private final Queue<Message> mailBox = new ConcurrentLinkedQueue<>();
     private final Pid pid;
     private final ThreeConsumer<Pid, Receiver, ProcessUtils> run;
     private final BiConsumer<Pid, Message<?>> despatcher;

@@ -37,7 +37,7 @@ public class ExecutorTask implements Runnable {
 
     public synchronized void stop() {
         processQueue.clear();
-        this.notify();
+        this.notifyAll();
     }
 
     @SneakyThrows
@@ -51,10 +51,12 @@ public class ExecutorTask implements Runnable {
     }
 
     private void runProcess() {
-        var process = processQueue.poll();
+        while (!processQueue.isEmpty()) {
+            var process = processQueue.poll();
 
-        if (process != null) {
-            process.processMessage();
+            if (process != null) {
+                process.processMessage();
+            }
         }
     }
 }

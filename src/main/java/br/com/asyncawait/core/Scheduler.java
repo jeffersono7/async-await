@@ -6,7 +6,6 @@ import br.com.asyncawait.core.models.Pid;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-// TODO ver forma de indexar o pid, necessário para encaminhar uma mensagem
 public final class Scheduler {
 
     private final Map<Pid, Process> processes = new ConcurrentHashMap<>();
@@ -18,12 +17,15 @@ public final class Scheduler {
 
     void add(Process process) {
         processes.put(process.self(), process);
+
+        this.executorTask.addProcessToRun(process);
     }
 
     void addMessageInQueue(Pid pid, Message<?> message) {
-        getProcessByPid(pid).addMessageInQueue(message);
+        var process = getProcessByPid(pid);
+        process.addMessageInQueue(message);
 
-        this.runAllProcesses();
+        this.executorTask.addProcessToRun(process);
     }
 
     Process getProcessByPid(Pid pid) {
