@@ -12,6 +12,7 @@ public class ExecutorTask implements Runnable {
 
     private final Queue<Process> processQueue = new ConcurrentLinkedQueue<>();
     private Thread threadExecutor;
+    private boolean alive = true;
 
     public static ExecutorTask getInstance() {
         var executor = new ExecutorTask();
@@ -25,7 +26,7 @@ public class ExecutorTask implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (alive) {
             this.start();
         }
     }
@@ -37,7 +38,12 @@ public class ExecutorTask implements Runnable {
 
     public synchronized void stop() {
         processQueue.clear();
+        alive = false;
         this.notifyAll();
+    }
+
+    public boolean isAlive() {
+        return this.threadExecutor.isAlive();
     }
 
     @SneakyThrows
