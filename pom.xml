@@ -52,8 +52,6 @@
                 <version>1.12.0</version>
                 <executions>
                     <execution>
-                        <configuration>
-                        </configuration>
                         <goals>
                             <goal>compile</goal>
                             <goal>compileTests</goal>
@@ -64,9 +62,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12.4</version>
+                <version>3.0.0-M5</version>
                 <configuration>
                     <useFile>false</useFile>
+                    <failIfNoTests>true</failIfNoTests>
+                    <parallel>3</parallel>
                     <includes>
                         <include>**/*Test</include>
                         <include>**/*Spec</include>

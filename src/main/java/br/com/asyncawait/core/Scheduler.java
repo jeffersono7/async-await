@@ -43,7 +43,10 @@ public final class Scheduler {
     private void start() {
         this.executorTask = ExecutorTask.getInstance();
 
-        runAllProcesses();
+        if (executorTask.isAlive()) {
+            runAllProcesses();
+        }
+        // TODO quando executor morrer, é interessante subir outro
     }
 
     private void runAllProcesses() {
