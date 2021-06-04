@@ -49,7 +49,7 @@ class ExecutorTaskSpec extends Specification implements TestUtils {
         instancia.stop()
 
         then:
-        notThrown(waitUntil(() -> instancia.isAlive() == false, UM_SEGUNDO))
+        notThrown(waitSupplierUntil(() -> instancia.isAlive() == false, UM_SEGUNDO))
     }
 
     private ThreeConsumer<Pid, Receiver, ProcessUtils> consumerMock(FutureTask invokeFun) {
