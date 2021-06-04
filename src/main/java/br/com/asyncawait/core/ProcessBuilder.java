@@ -14,7 +14,7 @@ public class ProcessBuilder {
         return new ProcessBuilder(asyncAwait);
     }
 
-    public Pid createProcess(ThreeConsumer<Pid, Receiver, ProcessUtils> run) {
+    public Pid spawn(ThreeConsumer<Pid, Receiver, ProcessUtils> run) {
         return Process.newInstance(asyncAwait, run);
     }
 }
