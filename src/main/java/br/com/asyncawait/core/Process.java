@@ -21,12 +21,14 @@ public class Process implements Self {
     private final ThreeConsumer<Pid, Receiver, ProcessUtils> run;
     private final BiConsumer<Pid, Message<?>> despatcher;
 
+    // TODO problema de poder receber o pid source, também complica na questão de não ter pattern matching
+    //  para poder chamar o "callback" para ir retornando no fluxo
     public static Pid newInstance(AsyncAwait asyncAwait, ThreeConsumer<Pid, Receiver, ProcessUtils> run) {
         var pid = Pid.newInstance();
 
         var process = new Process(pid, run, asyncAwait::sendMessage);
 
-        AsyncAwait.start().addProcess(process);
+        asyncAwait.addProcess(process);
 
         return pid;
     }
@@ -53,7 +55,7 @@ public class Process implements Self {
         // somente para registrar os matchers no receiver
         run.accept(pid, receiver, processUtils);
 
-        var contentClass = message.getContent().getClass();
+        var contentClass = message.getContent().getClass(); // TODO problema de classe superior ou até mesmo interface
 
         receiver.receivers().getOrDefault(contentClass, consumerImpl()).accept(message);
     }

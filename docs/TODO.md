@@ -8,3 +8,7 @@
 - Controle de excessões, principalmente para não comprometer "infra" do async/await
 - Publicação no maven repository
 - Deep copy das mensagens, para tornar um pouco mais pura as funções dos processos
+
+### Para discutir
+
+- Talvez seja interessante o source ser sempre o pid de quem fez despatch, e não poder dizer quem foi.
