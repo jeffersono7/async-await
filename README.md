@@ -1,6 +1,8 @@
 # Async/Await
 
-Biblioteca para implementação de atores para processamento paralelo inspirando no Elixir/Erlang OTP
+[![AsyncAwait](https://circleci.com/gh/jeffersono7/async-await.svg?style=svg)](https://app.circleci.com/pipelines/github/jeffersono7/async-await)
+
+Biblioteca para implementação de atores para processamento paralelo e assincrono inspirado no Elixir/Erlang OTP
 
 ## Usando
 

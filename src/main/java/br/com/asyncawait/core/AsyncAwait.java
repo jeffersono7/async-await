@@ -2,6 +2,7 @@ package br.com.asyncawait.core;
 
 import br.com.asyncawait.core.models.Message;
 import br.com.asyncawait.core.models.Pid;
+import br.com.asyncawait.core.ports.driven.Scheduler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,7 +19,7 @@ public final class AsyncAwait {
         var quantidadeThreadsSistema = 14; // TODO pegar inf do SO
 
         for (int i = 0; i < quantidadeThreadsSistema; i++) {
-            this.schedulers.add(new Scheduler());
+            this.schedulers.add(new SchedulerImpl());
         }
     }
 
