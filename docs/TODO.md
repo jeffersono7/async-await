@@ -1,7 +1,8 @@
 # Lista de funcionalidades/implementações para fazer
 
-- Cobertura de testes - DOING
-- CI
+- Cobertura de testes - DONE
+- CI - DONE
+- CD (Maven repository)
 - Trocar algumas assinaturas, tipo spawn, ... (Ficar mais próximo ao Elixir)
 - Morte de um processo
 - Supervisors como um tipo de processo que gerencia outros
