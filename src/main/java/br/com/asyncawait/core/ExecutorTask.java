@@ -27,7 +27,11 @@ public class ExecutorTask implements Runnable {
     @Override
     public void run() {
         while (alive) {
-            this.start();
+            try {
+                this.start();
+            } catch (Exception e) {
+                this.alive = false;
+            }
         }
     }
 
@@ -60,9 +64,18 @@ public class ExecutorTask implements Runnable {
         while (!processQueue.isEmpty()) {
             var process = processQueue.poll();
 
-            if (process != null) {
-                process.processMessage();
+            if (process == null) {
+                return;
             }
+
+            executeProcess(process);
+        }
+    }
+
+    private void executeProcess(Process process) {
+        try {
+            process.processMessage();
+        } catch (Exception e) {
         }
     }
 }

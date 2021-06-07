@@ -20,6 +20,7 @@ public final class SchedulerImpl implements Scheduler {
     public void add(Process process) {
         processes.put(process.self(), process);
 
+        verifyExecutorTaskAlive();
         this.executorTask.addProcessToRun(process);
     }
 
@@ -28,6 +29,7 @@ public final class SchedulerImpl implements Scheduler {
         var process = getProcessByPid(pid);
         process.addMessageInQueue(message);
 
+        verifyExecutorTaskAlive();
         this.executorTask.addProcessToRun(process);
     }
 
@@ -51,10 +53,20 @@ public final class SchedulerImpl implements Scheduler {
         if (executorTask.isAlive()) {
             runAllProcesses();
         }
-        // TODO quando executor morrer, é interessante subir outro
     }
 
     private void runAllProcesses() {
-        processes.values().forEach(this.executorTask::addProcessToRun);
+        verifyExecutorTaskAlive();
+
+        processes.values()
+                .stream()
+                .filter(Process::isAlive)
+                .forEach(this.executorTask::addProcessToRun);
+    }
+
+    private void verifyExecutorTaskAlive() {
+        if (!executorTask.isAlive()) {
+            executorTask = ExecutorTask.getInstance();
+        }
     }
 }

@@ -6,6 +6,7 @@ import br.com.asyncawait.core.models.Self;
 import br.com.asyncawait.core.models.ThreeConsumer;
 import br.com.asyncawait.core.utils.ProcessUtils;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Queue;
@@ -20,6 +21,10 @@ public class Process implements Self {
     private final Pid pid;
     private final ThreeConsumer<Pid, Receiver, ProcessUtils> run;
     private final BiConsumer<Pid, Message<?>> despatcher;
+    private boolean alive = true;
+
+    @Getter
+    private Exception exception;
 
     // TODO problema de poder receber o pid source, também complica na questão de não ter pattern matching
     //  para poder chamar o "callback" para ir retornando no fluxo
@@ -57,7 +62,24 @@ public class Process implements Self {
 
         var contentClass = message.getContent().getClass(); // TODO problema de classe superior ou até mesmo interface
 
-        receiver.receivers().getOrDefault(contentClass, consumerImpl()).accept(message);
+        try {
+            receiver.receivers().getOrDefault(contentClass, consumerImpl()).accept(message);
+        } catch (Exception e) {
+            receiver.getConsumerException().accept(e);
+
+            this.breakProcess(e);
+
+            throw e;
+        }
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    void breakProcess(Exception e) {
+        this.alive = false;
+        this.exception = e;
     }
 
     private Consumer<Message> consumerImpl() {

@@ -37,4 +37,27 @@ class ReceiverSpec extends Specification {
         expectedMessage == result
         expectedMessage.content == result.content
     }
+
+    def "Deve setar catchException"() {
+        receiver = new Receiver()
+        def exception = null
+
+        when:
+        receiver.catchException(e -> exception = e)
+        receiver.getConsumerException().accept(new Exception("ok!"))
+
+        then:
+        exception != null
+    }
+
+    def "Quando não tiver setado um consumerException, deve retornar um default sem ação"() {
+        receiver = new Receiver()
+
+        when:
+        def consumerException = receiver.getConsumerException()
+
+        then:
+        consumerException != null
+        consumerException.accept(new Exception())
+    }
 }
