@@ -28,9 +28,28 @@ class AsyncAwaitSpec extends Specification implements TestUtils {
         def asyncAwait = AsyncAwait.start()
 
         when:
-        def asyncInstance = asyncAwait.async(() -> supplierObjectWithDelay(expected, 200))
+        def asyncInstance = asyncAwait.async(supplierObjectWithDelay(expected, 200))
 
         then:
-        asyncInstance.await().get() == expected
+        asyncInstance.await() == expected
+    }
+
+    def "Ao executar processo que lance um exception, não deve quebrar infra do async/await"() {
+        given:
+        def asyncAwait = AsyncAwait.start()
+        def expected = "Esse funciona!"
+
+        def asyncInstanceBroke = asyncAwait.async(() -> {
+            throw new RuntimeException("Broke")
+        })
+        def asyncInstance = asyncAwait.async(() -> expected)
+
+        when:
+        def result = asyncInstance.await()
+        asyncInstanceBroke.await() // Esse vem depois porque vai lançar excessão
+
+        then:
+        result == expected
+        thrown(RuntimeException)
     }
 }

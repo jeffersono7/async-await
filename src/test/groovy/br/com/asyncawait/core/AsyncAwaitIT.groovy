@@ -22,8 +22,6 @@ class AsyncAwaitIT extends Specification {
             receiver.receive(String.class, message -> {
                 var content = message.getContent();
 
-                System.out.println("Comprimento da string: " + content);
-
                 utils.despatcher.accept(message.getSender(), new Message<>(self, content.length()));
             });
         });

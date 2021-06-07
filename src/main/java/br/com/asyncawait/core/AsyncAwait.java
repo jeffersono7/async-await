@@ -57,7 +57,7 @@ public final class AsyncAwait implements Self {
                 var content = supplier.get();
 
                 async.accept(content);
-            });
+            }).catchException(async::catchException);
         }));
 
         this.sendMessage(asyncPid, new Message<>(Pid.newInstance(), Boolean.TRUE));
@@ -97,6 +97,7 @@ public final class AsyncAwait implements Self {
     }
 
     private Scheduler getBetterScheduler() {
+
         return this.schedulers.stream()
                 .sorted(Comparator.comparing(Scheduler::sizeQueue))
                 .findFirst()
