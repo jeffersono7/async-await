@@ -35,7 +35,7 @@ public class Main {
         var async1 = asyncAwait.async(() -> "an example!");
         var async2 = asyncAwait.async(() -> "a second example!");
         
-        async2.await().equals("an example!"); // true
+        async2.await().equals("a second example!"); // true
         async1.await().equals("an example!"); // true
     }
 }
