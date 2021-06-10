@@ -8,6 +8,16 @@ Library for implementing actors for parallel and asynchronous processing inspire
 
 Start the AsyncAwait with:
 
+Add in your pom.xml file
+
+```xml
+<dependency>
+  <groupId>io.github.jeffersono7</groupId>
+  <artifactId>async-await</artifactId>
+  <version>1.0.0-alpha.2</version>
+</dependency>
+```
+
 ```java
 import br.com.asyncawait.core.AsyncAwait;
 
