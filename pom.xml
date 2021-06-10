@@ -14,6 +14,7 @@
         Async/Await for the java project, which implements an actor architecture with message exchange,
         paralleling the execution of tasks
     </description>
+    <url>https://github.com/jeffersono7/async-await</url>
 
     <licenses>
         <license>
