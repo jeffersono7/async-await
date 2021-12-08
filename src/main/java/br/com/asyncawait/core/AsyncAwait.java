@@ -15,6 +15,8 @@ import java.util.function.Supplier;
 
 public final class AsyncAwait implements Self {
 
+    private static final int SCHEDULERS_PER_THREADS = 10;
+
     private static AsyncAwait instance;
 
     private final List<Scheduler> schedulers = new ArrayList<>();
@@ -22,7 +24,7 @@ public final class AsyncAwait implements Self {
     private Pid selfPid;
 
     private AsyncAwait() {
-        var quantidadeThreadsSistema = 14; // TODO pegar inf do SO
+        var quantidadeThreadsSistema = Runtime.getRuntime().availableProcessors() * SCHEDULERS_PER_THREADS;
 
         for (int i = 0; i < quantidadeThreadsSistema; i++) {
             this.schedulers.add(new SchedulerImpl());
