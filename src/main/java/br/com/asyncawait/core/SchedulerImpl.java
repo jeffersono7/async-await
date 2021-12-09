@@ -50,9 +50,7 @@ public final class SchedulerImpl implements Scheduler {
     private void start() {
         this.executorTask = ExecutorTask.getInstance();
 
-        if (executorTask.isAlive()) {
-            runAllProcesses();
-        }
+        runAllProcesses();
     }
 
     private void runAllProcesses() {

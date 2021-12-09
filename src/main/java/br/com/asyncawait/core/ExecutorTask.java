@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExecutorTask implements Runnable {
@@ -17,7 +18,7 @@ public class ExecutorTask implements Runnable {
     public static ExecutorTask getInstance() {
         var executor = new ExecutorTask();
 
-        var thread = new Thread(executor);
+        var thread = Executors.defaultThreadFactory().newThread(executor);
         executor.threadExecutor = thread;
         thread.start();
 
