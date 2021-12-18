@@ -2,7 +2,7 @@
 - 
 - CD (Maven repository)
 - Supervisors como um tipo de processo que gerencia outros
-- Publicação no maven repository
+- Publicação no maven repository - DONE
 - Deep copy das mensagens, para tornar um pouco mais pura as funções dos processos
 - Cobertura de testes - DONE
 - CI - DONE
