@@ -9,6 +9,10 @@
 - Trocar algumas assinaturas, tipo spawn, ... (Ficar mais próximo ao Elixir) - DONE
 - Morte de um processo - DONE
 - Controle de excessões, principalmente para não comprometer "infra" do async/await - DONE
+- Process link
+- Process flag
+- Receive timeout
+- Await timeout
 
 ### Para discutir
 

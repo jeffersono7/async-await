@@ -26,8 +26,6 @@ public class Process implements Self {
     @Getter
     private Exception exception;
 
-    // TODO problema de poder receber o pid source, também complica na questão de não ter pattern matching
-    //  para poder chamar o "callback" para ir retornando no fluxo
     public static Pid newInstance(AsyncAwait asyncAwait, ThreeConsumer<Pid, Receiver, ProcessUtils> run) {
         var pid = Pid.newInstance();
 
